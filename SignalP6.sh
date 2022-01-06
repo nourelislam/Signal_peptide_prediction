@@ -3,3 +3,7 @@ signalp6 -ff uniprot-compressed_true_download_true_format_fasta_query_proteome_3
 -fmt for formating
 -org for organism
 -ff for Fasta file
+
+#Change teh delimiter of the gff3 file##
+awk '$1=$1' FS=" " OFS="," output.gff3 > output.test.gff3 
+awk -F '[|, , ]' '{print $2, $8, $9, $16, $17}' output.test.gff3 
