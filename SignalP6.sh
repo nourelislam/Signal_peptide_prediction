@@ -10,3 +10,7 @@ awk -F "|" '{print $2}' comma_updated.gff3 > BSF_SP_ids.txt ## protein IDs
 cat comma_updated.gff3 | rev | cut -d, -f5,6 | rev > coordinates_BSE_SP.txt ## coordinates
 paste -d, BSF_SP_ids.txt coordinates_BSE_SP.txt > SP_BSF.txt ## merging 2966 signal peptide for BSF
 
+#Match IDs of SP to fasta #
+grep -w -A 1 -f  IDs_SP.txt processed_entries.fasta --no-group-separator > SP_protein.fasta
+# inser > at the header #
+awk '{ if ($0 ~ /_/) { printf ">"; } print $0; }' SP_protein.fasta > SP_BSF.fasta 
