@@ -8,5 +8,5 @@ signalp6 -ff uniprot-compressed_true_download_true_format_fasta_query_proteome_3
 awk '$1=$1' FS=" " OFS="," output.gff3 > output.test.gff3 
 awk -F "|" '{print $2}' comma_updated.gff3 > BSF_SP_ids.txt ## protein IDs
 cat comma_updated.gff3 | rev | cut -d, -f5,6 | rev > coordinates_BSE_SP.txt ## coordinates
-paste -d, BSF_SP_ids.txt coordinates_BSE_SP.txt > SP_BSF.txt ## merging
+paste -d, BSF_SP_ids.txt coordinates_BSE_SP.txt > SP_BSF.txt ## merging 2966 signal peptide for BSF
 
