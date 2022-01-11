@@ -35,5 +35,26 @@ diff <(head -n1 fasta.txt) <( head -n1 bed.txt)
 
 ######################################################################
 
+                        ## Drosophila Signal peptides ###
+## manipulate the gff3 file #
+grep "sp|" output.gff3 | awk -F '|' '{print $1, $2}' | sed 's/ /|/g' > prot_ids.txt
+awk '$1=$1' FS=" " OFS="," output.gff3 >comma_sp.gff3
+cat comma_sp.gff3 | rev | cut -d, -f5,6 | rev > coordinates_Dro_SP.txt
+## Delete the first row inplace #
+sed -i '1d' coordinates_Dro_SP.txt
+
+paste -d, prot_ids.txt coordinates_Dro_SP.txt | sed 's/,/\t/g' > SP_coordinates.bed
+awk -F '\t' '$3 >= 5 { print }' SP_coordinates.bed > filtered_coordinates.bed
+
+## Manipulate in Fasta file ##
+grep -w -A1 -f prot_ids.txt processed_entries.fasta --no-group-separator > SP_Dro.fasta 
+awk '{ if ($0 ~ /_/) { printf ">"; } print $0; }' SP_Dro.fasta | awk 'NR%2==0'| paste -d'\n' prot_ids.txt - | awk '{ if ($0 ~ /_/) { printf ">"; } print $0; }' > matching.fasta
+sed 's/^sp|/\>sp|/g' matching.fasta > filt.Dro.fasta 
+bedtools getfasta -fi filt.Dro.fasta -bed filtered_coordinates.bed > Dro.SP.fasta
+
+
+
+
+
 
 
