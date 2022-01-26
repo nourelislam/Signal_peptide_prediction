@@ -52,7 +52,9 @@ awk '{ if ($0 ~ /_/) { printf ">"; } print $0; }' SP_Dro.fasta | awk 'NR%2==0'| 
 sed 's/^sp|/\>sp|/g' matching.fasta > filt.Dro.fasta 
 bedtools getfasta -fi filt.Dro.fasta -bed filtered_coordinates.bed > Dro.SP.fasta
 
-
+### filtering the signal peptides have <25 bases ###
+awk -F '\t' '$3 <= 25 { print }' filtered_coordinates.bed > test.bed
+bedtools getfasta -fi filt.Dro.fasta -bed test.bed > Short_25_seq.fasta
 
 
 
